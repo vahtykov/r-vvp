@@ -73,10 +73,6 @@ hist(data$INDPOTR, freq=TRUE, col="blue", xlab="INDPOTR", main="Гистограмма. Час
 #Гистограммы и Ядерная плотность
 #dev.new()
 #VVP
-hist(data$VVP, freq = FALSE, breaks=nVVP,col="grey88",
-     main="Гистограмма и яд-ная плот-ть, ВВП")
-lines(density(data$VVP), lwd = 2, col="red")
-rug(jitter(data$VVP))
 h = hist(
   data$VVP,
   breaks = nVVP,
@@ -90,10 +86,6 @@ yfit=yfit*diff(h$mids[1:2])*length(data$VVP)
 lines(xfit, yfit, col="red", lwd=2)
 
 #SG4Z
-hist(data$SG4Z, freq = FALSE, breaks=nVVP,col="grey88",
-     main="Гистограмма и яд-ная плот-ть, SG4Z")
-lines(density(data$SG4Z), lwd = 2, col="red")
-rug(jitter(data$SG4Z))
 h = hist(
   data$SG4Z,
   breaks = nSG4Z,
@@ -107,10 +99,6 @@ yfit=yfit*diff(h$mids[1:2])*length(data$SG4Z)
 lines(xfit, yfit, col="red", lwd=2)
 
 #X4BR
-hist(data$X4BR, freq = FALSE, breaks=nX4BR,col="grey88",
-     main="Гистограмма и яд-ная плот-ть, X4BR")
-lines(density(data$X4BR), lwd = 2, col="red")
-rug(jitter(data$X4BR))
 h = hist(
   data$X4BR,
   breaks = nX4BR,
@@ -124,10 +112,6 @@ yfit=yfit*diff(h$mids[1:2])*length(data$X4BR)
 lines(xfit, yfit, col="red", lwd=2)
 
 #X4BRZ
-hist(data$X4BRZ, freq = FALSE, breaks=nX4BRZ,col="grey88",
-     main="Гистограмма и яд-ная плот-ть, X4BRZ")
-lines(density(data$X4BRZ), lwd = 2, col="red")
-rug(jitter(data$X4BRZ))
 h = hist(
   data$X4BRZ,
   breaks = nX4BRZ,
@@ -141,10 +125,6 @@ yfit=yfit*diff(h$mids[1:2])*length(data$X4BRZ)
 lines(xfit, yfit, col="red", lwd=2)
 
 #SDDN
-hist(data$SDDN, freq = FALSE, breaks=nSDDN,col="grey88",
-     main="Гистограмма и яд-ная плот-ть, SDDN")
-lines(density(data$SDDN), lwd = 2, col="red")
-rug(jitter(data$SDDN))
 h = hist(
   data$SDDN,
   breaks = nSDDN,
@@ -158,10 +138,6 @@ yfit=yfit*diff(h$mids[1:2])*length(data$SDDN)
 lines(xfit, yfit, col="red", lwd=2)
 
 #SNZP
-hist(data$SNZP, freq = FALSE, breaks=nSNZP,col="grey88",
-     main="Гистограмма и яд-ная плот-ть, SNZP")
-lines(density(data$SNZP), lwd = 2, col="red")
-rug(jitter(data$SNZP))
 h = hist(
   data$SNZP,
   breaks = nSNZP,
@@ -175,10 +151,6 @@ yfit=yfit*diff(h$mids[1:2])*length(data$SNZP)
 lines(xfit, yfit, col="red", lwd=2)
 
 #DKB
-hist(data$DKB, freq = FALSE, breaks=nDKB,col="grey88",
-     main="Гистограмма и яд-ная плот-ть, DKB")
-lines(density(data$DKB), lwd = 2, col="red")
-rug(jitter(data$DKB))
 h = hist(
   data$DKB,
   breaks = nDKB,
@@ -192,10 +164,6 @@ yfit=yfit*diff(h$mids[1:2])*length(data$DKB)
 lines(xfit, yfit, col="red", lwd=2)
 
 #DMAS
-hist(data$DMAS, freq = FALSE, breaks=nDMAS,col="grey88",
-     main="Гистограмма и яд-ная плот-ть, DMAS")
-lines(density(data$DMAS), lwd = 2, col="blue")
-rug(jitter(data$DMAS))
 h = hist(
   data$DMAS,
   breaks = nDMAS,
@@ -209,10 +177,6 @@ yfit=yfit*diff(h$mids[1:2])*length(data$DMAS)
 lines(xfit, yfit, col="red", lwd=2)
 
 #NALOBR
-hist(data$NALOBR, freq = FALSE, breaks=nNALOBR,col="grey88",
-     main="Гистограмма и яд-ная плот-ть, NALOBR")
-lines(density(data$NALOBR), lwd = 2, col="blue")
-rug(jitter(data$NALOBR))
 h = hist(
   data$NALOBR,
   breaks = nNALOBR,
@@ -226,10 +190,6 @@ yfit=yfit*diff(h$mids[1:2])*length(data$NALOBR)
 lines(xfit, yfit, col="red", lwd=2)
 
 #INVOSN
-hist(data$INVOSN, freq = FALSE, breaks=nINVOSN,col="grey88",
-     main="Гистограмма и яд-ная плот-ть, INVOSN")
-lines(density(data$INVOSN), lwd = 2, col="blue")
-rug(jitter(data$INVOSN))
 h = hist(
   data$INVOSN,
   breaks = nINVOSN,
@@ -243,10 +203,6 @@ yfit=yfit*diff(h$mids[1:2])*length(data$INVOSN)
 lines(xfit, yfit, col="red", lwd=2)
 
 #INDPOTR
-hist(data$INDPOTR, freq = FALSE, breaks=nINDPOTR,col="grey88",
-     main="Гистограмма и яд-ная плот-ть, INDPOTR")
-lines(density(data$INDPOTR), lwd = 2, col="blue")
-rug(jitter(data$INDPOTR))
 h = hist(
   data$INDPOTR,
   breaks = nINDPOTR,
@@ -548,32 +504,41 @@ x_INDPOTR.qq <- lapply(x_INDPOTR.qq, sort)
 plot(x_INDPOTR.qq, ylim = c(-2, 5), ylab = "Z-статистики выборки", xlab = "Квантили НР, INDPOTR")
 
 
-#Функции плотности распределения
+#Функции плотности распределения и Тесты на нормальность Шапиро-Уилкса
 sm.density(data$VVP, model = "Normal", xlab="VVP, Имитированная выборка", ylab = "Функция плотности распределения")
-sm.density(data$SG4Z, model = "Normal", xlab="SG4Z, Имитированная выборка", ylab = "Функция плотности распределения")
-sm.density(data$X4BR, model = "Normal", xlab="X4BR, Имитированная выборка", ylab = "Функция плотности распределения")
-sm.density(data$X4BRZ, model = "Normal", xlab="X4BRZ, Имитированная выборка", ylab = "Функция плотности распределения")
-sm.density(data$SDDN, model = "Normal", xlab="SDDN, Имитированная выборка", ylab = "Функция плотности распределения")
-sm.density(data$SNZP, model = "Normal", xlab="SNZP, Имитированная выборка", ylab = "Функция плотности распределения")
-sm.density(data$DKB, model = "Normal", xlab="DKB, Имитированная выборка", ylab = "Функция плотности распределения")
-sm.density(data$DMAS, model = "Normal", xlab="DMAS, Имитированная выборка", ylab = "Функция плотности распределения")
-sm.density(data$NALOBR, model = "Normal", xlab="NALOBR, Имитированная выборка", ylab = "Функция плотности распределения")
-sm.density(data$INVOSN, model = "Normal", xlab="INVOSN, Имитированная выборка", ylab = "Функция плотности распределения")
-sm.density(data$INDPOTR, model = "Normal", xlab="INDPOTR, Имитированная выборка", ylab = "Функция плотности распределения")
-
-
-#Тесты на нормальность Шапиро-Уилкса
 shapiro.test(data$VVP)
+
+sm.density(data$SG4Z, model = "Normal", xlab="SG4Z, Имитированная выборка", ylab = "Функция плотности распределения")
 shapiro.test(data$SG4Z)
+
+sm.density(data$X4BR, model = "Normal", xlab="X4BR, Имитированная выборка", ylab = "Функция плотности распределения")
 shapiro.test(data$X4BR)
+
+sm.density(data$X4BRZ, model = "Normal", xlab="X4BRZ, Имитированная выборка", ylab = "Функция плотности распределения")
 shapiro.test(data$X4BRZ)
+
+sm.density(data$SDDN, model = "Normal", xlab="SDDN, Имитированная выборка", ylab = "Функция плотности распределения")
 shapiro.test(data$SDDN)
+
+sm.density(data$SNZP, model = "Normal", xlab="SNZP, Имитированная выборка", ylab = "Функция плотности распределения")
 shapiro.test(data$SNZP)
+
+sm.density(data$DKB, model = "Normal", xlab="DKB, Имитированная выборка", ylab = "Функция плотности распределения")
 shapiro.test(data$DKB)
+
+sm.density(data$DMAS, model = "Normal", xlab="DMAS, Имитированная выборка", ylab = "Функция плотности распределения")
 shapiro.test(data$DMAS)
+
+sm.density(data$NALOBR, model = "Normal", xlab="NALOBR, Имитированная выборка", ylab = "Функция плотности распределения")
 shapiro.test(data$NALOBR)
+
+sm.density(data$INVOSN, model = "Normal", xlab="INVOSN, Имитированная выборка", ylab = "Функция плотности распределения")
 shapiro.test(data$INVOSN)
+
+sm.density(data$INDPOTR, model = "Normal", xlab="INDPOTR, Имитированная выборка", ylab = "Функция плотности распределения")
 shapiro.test(data$INDPOTR)
+
+
 
 
 names(dataPsych)[1] <- "ID"

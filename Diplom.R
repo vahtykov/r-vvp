@@ -3,6 +3,7 @@ library(reshape)
 library(moments)
 library(gplots)
 library(gclus)
+library(gvlma)
 library(psych)
 library(ggm)
 library(sm)
@@ -554,6 +555,290 @@ names(dataPsych)[10] <- "Разброс"
 names(dataPsych)[11] <- "Скос"
 names(dataPsych)[12] <- "Эксцесс"
 names(dataPsych)[13] <- "Средняя квадратическая ошибка"
+
+
+
+
+#######Модель №1#######
+
+statesOP1 <- as.data.frame(dataFull[,c("VVP","SG4Z","X4BR")])
+
+head(statesOP1)
+
+str(statesOP1)
+
+#Регрессия OP1
+
+OP1 <- lm(VVP ~ SG4Z + X4BR, data = statesOP1)
+
+#Кореляция + Матрица диаграмм рассеяния OP1
+
+cor(statesOP1)
+
+scatterplotMatrix(statesOP1, spread = FALSE, lty.smooth = 2,main = "Матрица диаграмм рассеяния OP1")
+
+#Вывод данных OP1
+
+summary(OP1)
+
+confint(OP1)
+
+#Стандартный подход OP1
+
+par(mfrow = c(2,2))
+
+plot(OP1)
+
+#Нормальность OP1
+
+qqPlot(OP1, labels = row.names(statesOP1),id.method = "identify",simulate = TRUE, main = "Q-Q Plot OP1")
+
+residplot <- function(OP1, nbreaks=10){
+  
+  z <- rstudent(OP1)
+  
+  hist(z, breaks = nbreaks, freq = FALSE, xlab = "Остатки Стьюдента", main = "Распределение остатков OP1")
+  
+  rug(jitter(z), col = "brown")
+  
+  curve(dnorm(x, mean = mean(z), sd = sd(z)), add = TRUE, col = "blue", lwd = 2)
+  
+  lines(density(z)$x, density(z)$y, col = "red", lwd = 2, lty = 2)
+  
+  legend("topright",legend = c( "Кривая нормального распределения",
+                                
+                                "Ядерная оценка плотности"),
+         
+         lty = 1:2, col = c("blue","red"), cex = .7)
+  
+}
+
+residplot(OP1)
+
+#Независимость остатков OP1
+
+durbinWatsonTest(OP1)
+
+#Линейность OP1
+
+crPlots(OP1)
+
+#Гомоскедастичность OP1
+
+ncvTest(OP1)
+
+spreadLevelPlot(OP1)
+
+#Общая проверка выполнения требований OP1
+
+gvmodelOP1 <- gvlma(OP1)
+
+summary(gvmodelOP1)
+
+#Мультиколлинеарность OP1
+
+vif(OP1)
+
+sqrt(vif(OP1)) > 2 # проблема?
+
+#######Модель №2#######
+
+statesOP2 <- as.data.frame(dataFull[,c("VVP","X4BRZ","SNZP")])
+
+head(statesOP2)
+
+str(statesOP2)
+
+#Регрессия OP2
+
+OP2 <- lm(VVP ~ X4BRZ + SNZP, data = statesOP2)
+
+#Кореляция + Матрица диаграмм рассеяния OP2
+
+cor(statesOP2)
+
+scatterplotMatrix(statesOP2, spread = FALSE, lty.smooth = 2,main = "Матрица диаграмм рассеяния OP2")
+
+#Вывод данных OP2
+
+summary(OP2)
+
+confint(OP2)
+
+#Стандартный подход OP2
+
+par(mfrow = c(2,2))
+
+plot(OP2)
+
+#Нормальность OP2
+
+qqPlot(OP2, labels = row.names(statesOP2),id.method = "identify",simulate = TRUE, main = "Q-Q Plot OP2")
+
+residplot <- function(OP2, nbreaks=10){
+  
+  z <- rstudent(OP2)
+  
+  hist(z, breaks = nbreaks, freq = FALSE, xlab = "Остатки Стьюдента", main = "Распределение остатков OP2")
+  
+  rug(jitter(z), col = "brown")
+  
+  curve(dnorm(x, mean = mean(z), sd = sd(z)), add = TRUE, col = "blue", lwd = 2)
+  
+  lines(density(z)$x, density(z)$y, col = "red", lwd = 2, lty = 2)
+  
+  legend("topright",legend = c( "Кривая нормального распределения",
+                                
+                                "Ядерная оценка плотности"),
+         
+         lty = 1:2, col = c("blue","red"), cex = .7)
+  
+}
+
+residplot(OP2)
+
+#Независимость остатков OP2
+
+durbinWatsonTest(OP2)
+
+#Линейность OP2
+
+crPlots(OP2)
+
+#Гомоскедастичность OP2
+
+ncvTest(OP2)
+
+spreadLevelPlot(OP2)
+
+#Общая проверка выполнения требований OP2
+
+gvmodelOP2 <- gvlma(OP2)
+
+summary(gvmodelOP2)
+
+#Мультиколлинеарность OP2
+
+vif(OP2)
+
+sqrt(vif(OP2)) > 2 # проблема?
+
+#######Модель №3#######
+
+statesOP3 <- as.data.frame(dataFull[,c("VVP","X4BRZ","SNZP","DKB")])
+
+head(statesOP3)
+
+str(statesOP3)
+
+#Регрессия OP3
+
+OP3 <- lm(VVP ~ X4BRZ + SNZP + DKB, data = statesOP3)
+
+#Кореляция + Матрица диаграмм рассеяния OP3
+
+cor(statesOP3)
+
+scatterplotMatrix(statesOP3, spread = FALSE, lty.smooth = 2,main = "Матрица диаграмм рассеяния OP3")
+
+#Вывод данных OP3
+
+summary(OP3)
+
+confint(OP3)
+
+#Стандартный подход OP3
+
+par(mfrow = c(2,2))
+
+plot(OP3)
+
+#Нормальность OP3
+
+qqPlot(OP3, labels = row.names(statesOP3),id.method = "identify",simulate = TRUE, main = "Q-Q Plot OP3")
+
+residplot <- function(OP3, nbreaks=10){
+  
+  z <- rstudent(OP3)
+  
+  hist(z, breaks = nbreaks, freq = FALSE, xlab = "Остатки Стьюдента", main = "Распределение остатков OP3")
+  
+  rug(jitter(z), col = "brown")
+  
+  curve(dnorm(x, mean = mean(z), sd = sd(z)), add = TRUE, col = "blue", lwd = 2)
+  
+  lines(density(z)$x, density(z)$y, col = "red", lwd = 2, lty = 2)
+  
+  legend("topright",legend = c( "Кривая нормального распределения",
+                                
+                                "Ядерная оценка плотности"),
+         
+         lty = 1:2, col = c("blue","red"), cex = .7)
+  
+}
+
+residplot(OP3)
+
+#Независимость остатков OP3
+
+durbinWatsonTest(OP3)
+
+#Линейность OP3
+
+crPlots(OP3)
+
+#Гомоскедастичность OP3
+
+ncvTest(OP3)
+
+spreadLevelPlot(OP3)
+
+#Общая проверка выполнения требований OP3
+
+gvmodelOP3 <- gvlma(OP3)
+
+summary(gvmodelOP3)
+
+#Мультиколлинеарность OP3
+
+vif(OP3)
+
+sqrt(vif(OP3)) > 2 # Проблема?
+
+#######Сравнение моделей OP2 и OP3#######
+
+anova(OP1, OP2, OP3)
+
+AIC(OP1, OP2, OP3)
+
+stepAIC(OP1, direction = "backward")
+
+stepAIC(OP2, direction = "backward")
+
+stepAIC(OP3, direction = "backward")
+
+IZM1 <- list(durbinWatsonTest = durbinWatsonTest(OP1)$p, ncvTest = ncvTest(OP1)$p, vif = t(sqrt(vif(OP1)) > 2))
+
+IZM2 <- list(durbinWatsonTest = durbinWatsonTest(OP2)$p, ncvTest = ncvTest(OP2)$p, vif = t(sqrt(vif(OP2)) > 2))
+
+IZM3 <- list(durbinWatsonTest = durbinWatsonTest(OP3)$p, ncvTest = ncvTest(OP3)$p, vif = t(sqrt(vif(OP3)) > 2))
+
+vv <- rbind.data.frame(OP1 = t(IZM1), OP2 = t(IZM2), OP3 = t(IZM3))
+
+AIC <- AIC(OP1,OP2,OP3)$AIC
+
+vv <- cbind.data.frame(vv, AIC)
+
+Globalpvalue <- data.frame(pvalueOP1 = gvmodelOP1$GlobalTest$GlobalStat4$pvalue,
+                           
+                           pvalueOP2 = gvmodelOP2$GlobalTest$GlobalStat4$pvalue,
+                           
+                           pvalueOP3 = gvmodelOP3$GlobalTest$GlobalStat4$pvalue)
+
+vv <- cbind.data.frame(vv, t(Globalpvalue))
+
+#########################################
+
 
 #savehistory()
 save.image()

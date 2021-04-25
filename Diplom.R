@@ -12,6 +12,7 @@ library(MASS)
 library(fitdistrplus)
 library(nortest)
 library(leaps)
+library(lmtest)
 
 dataFull <- read.csv("D:/RData/DIPLOM/dataFull.csv", header=TRUE, sep=";")
 data <- as.data.frame(dataFull[,c("VVP", "SG4Z", "X4BR", "X4BRZ", "SDDN", "SNZP", "DKB", "DMAS", "NALOBR", "INVOSN", "INDPOTR")])
@@ -619,6 +620,8 @@ residplot(OP1)
 #Независимость остатков OP1
 
 durbinWatsonTest(OP1)
+#Тест Бройша-Годфри
+bgtest(OP1, order = 2)
 
 #Линейность OP1
 
@@ -641,6 +644,13 @@ summary(gvmodelOP1)
 vif(OP1)
 
 sqrt(vif(OP1)) > 2 # проблема?
+
+
+
+
+
+
+
 
 #######Модель №2#######
 
@@ -701,6 +711,8 @@ residplot(OP2)
 #Независимость остатков OP2
 
 durbinWatsonTest(OP2)
+#Тест Бройша-Годфри
+bgtest(OP2, order = 2)
 
 #Линейность OP2
 
@@ -723,6 +735,12 @@ summary(gvmodelOP2)
 vif(OP2)
 
 sqrt(vif(OP2)) > 2 # проблема?
+
+
+
+
+
+
 
 #######Модель №3#######
 
@@ -806,17 +824,85 @@ vif(OP3)
 
 sqrt(vif(OP3)) > 2 # Проблема?
 
-#######Сравнение моделей OP2 и OP3#######
 
-anova(OP1, OP2, OP3)
 
-AIC(OP1, OP2, OP3)
 
-stepAIC(OP1, direction = "backward")
 
-stepAIC(OP2, direction = "backward")
+#######Модель №4#######
 
-stepAIC(OP3, direction = "backward")
+statesOP4 <- as.data.frame(dataFull[,c("VVP","X4BRZ","SNZP","INVOSN")])
+
+head(statesOP4)
+str(statesOP4)
+
+#Регрессия OP4
+OP4 <- lm(VVP ~ X4BRZ + SNZP + INVOSN, data = statesOP4)
+
+#Кореляция + Матрица диаграмм рассеяния OP4
+cor(statesOP4)
+
+scatterplotMatrix(statesOP4, spread = FALSE, lty.smooth = 2,main = "Матрица диаграмм рассеяния OP4")
+
+#Вывод данных OP4
+summary(OP4)
+confint(OP4)
+
+#Стандартный подход OP4
+par(mfrow = c(2,2))
+plot(OP4)
+
+#Нормальность OP4
+qqPlot(OP4, labels = row.names(statesOP4),id.method = "identify",simulate = TRUE, main = "Q-Q Plot OP4")
+
+residplot <- function(OP4, nbreaks=10){
+  z <- rstudent(OP4)
+  hist(z, breaks = nbreaks, freq = FALSE, xlab = "Остатки Стьюдента", main = "Распределение остатков OP4")
+  rug(jitter(z), col = "brown")
+  curve(dnorm(x, mean = mean(z), sd = sd(z)), add = TRUE, col = "blue", lwd = 2)
+  lines(density(z)$x, density(z)$y, col = "red", lwd = 2, lty = 2)
+  legend("topright",legend = c( "Кривая нормального распределения",
+                                "Ядерная оценка плотности"),
+         lty = 1:2, col = c("blue","red"), cex = .7)
+}
+
+residplot(OP4)
+
+#Независимость остатков OP4
+durbinWatsonTest(OP4)
+
+#Линейность OP4
+crPlots(OP4)
+
+#Гомоскедастичность OP4
+ncvTest(OP4)
+spreadLevelPlot(OP4)
+
+#Общая проверка выполнения требований OP4
+gvmodelOP4 <- gvlma(OP4)
+summary(gvmodelOP4)
+
+#Мультиколлинеарность OP4
+vif(OP4)
+sqrt(vif(OP4)) > 2 # Проблема?
+
+
+
+
+
+
+#######Сравнение моделей#######
+
+anova(OP1, OP2, OP3, OP4)
+
+AIC(OP1, OP2, OP3, OP4)
+
+#stepAIC(OP1, direction = "backward")
+
+#stepAIC(OP2, direction = "backward")
+
+#stepAIC(OP3, direction = "backward")
+
+#stepAIC(OP4, direction = "backward")
 
 IZM1 <- list(durbinWatsonTest = durbinWatsonTest(OP1)$p, ncvTest = ncvTest(OP1)$p, vif = t(sqrt(vif(OP1)) > 2))
 
@@ -824,9 +910,11 @@ IZM2 <- list(durbinWatsonTest = durbinWatsonTest(OP2)$p, ncvTest = ncvTest(OP2)$
 
 IZM3 <- list(durbinWatsonTest = durbinWatsonTest(OP3)$p, ncvTest = ncvTest(OP3)$p, vif = t(sqrt(vif(OP3)) > 2))
 
-vv <- rbind.data.frame(OP1 = t(IZM1), OP2 = t(IZM2), OP3 = t(IZM3))
+IZM4 <- list(durbinWatsonTest = durbinWatsonTest(OP4)$p, ncvTest = ncvTest(OP4)$p, vif = t(sqrt(vif(OP4)) > 2))
 
-AIC <- AIC(OP1,OP2,OP3)$AIC
+vv <- rbind.data.frame(OP1 = t(IZM1), OP2 = t(IZM2), OP3 = t(IZM3), OP4 = t(IZM4))
+
+AIC <- AIC(OP1,OP2,OP3,OP4)$AIC
 
 vv <- cbind.data.frame(vv, AIC)
 
@@ -834,16 +922,18 @@ Globalpvalue <- data.frame(pvalueOP1 = gvmodelOP1$GlobalTest$GlobalStat4$pvalue,
                            
                            pvalueOP2 = gvmodelOP2$GlobalTest$GlobalStat4$pvalue,
                            
-                           pvalueOP3 = gvmodelOP3$GlobalTest$GlobalStat4$pvalue)
+                           pvalueOP3 = gvmodelOP3$GlobalTest$GlobalStat4$pvalue,
+                           
+                           pvalueOP4 = gvmodelOP4$GlobalTest$GlobalStat4$pvalue)
 
 vv <- cbind.data.frame(vv, t(Globalpvalue))
 
 #########################################
 
 
-leaps <- regsubsets(VVP ~ SG4Z + X4BR + X4BRZ + SDDN + SNZP + DKB + DMAS + NALOBR + INVOSN + INDPOTR, data = data, nbest = 10)
+#leaps <- regsubsets(VVP ~ SG4Z + X4BR + X4BRZ + SDDN + SNZP + DKB + DMAS + NALOBR + INVOSN + INDPOTR, data = data, nbest = 10)
 #dev.new()
-plot(leaps, scale = "adjr2")
+#plot(leaps, scale = "adjr2")
 
 
 
@@ -861,9 +951,9 @@ shrinkage <- function(fit, k=10){
   cat("Change =", r2-r2cv, "\n")
 }
 
-zdata <- as.data.frame(scale(data))
-zfit <- lm(VVP ~ SG4Z + X4BR + X4BRZ + SDDN + SNZP + DKB + DMAS + NALOBR + INVOSN + INDPOTR, data=zdata)
-coef(zfit)
+#zdata <- as.data.frame(scale(data))
+#zfit <- lm(VVP ~ SG4Z + X4BR + X4BRZ + SDDN + SNZP + DKB + DMAS + NALOBR + INVOSN + INDPOTR, data=zdata)
+#coef(zfit)
 
 
 
@@ -871,19 +961,21 @@ coef(zfit)
 
 #Регрессия OPFull
 
-OPFull <- lm(VVP ~ SG4Z + X4BR + X4BRZ + SDDN + SNZP + DKB + DMAS + NALOBR + INVOSN + INDPOTR, data = data)
-OpNew <- lm(formula = VVP ~ X4BR + X4BRZ + SDDN + SNZP + DKB + INVOSN + INDPOTR, data = data)
+#OPFull <- lm(VVP ~ SG4Z + X4BR + X4BRZ + SDDN + SNZP + DKB + DMAS + NALOBR + INVOSN + INDPOTR, data = data)
+#OpNew <- lm(formula = VVP ~ X4BR + X4BRZ + SDDN + SNZP + DKB + INVOSN + INDPOTR, data = data)
+#OP4 <- lm(VVP ~ X4BRZ + SNZP + INVOSN, data = data)
+
 
 #Вывод данных OPFull
 
-summary(OPFull)
+#summary(OPFull)
 
-confint(OPFull)
+#confint(OPFull)
 
-AIC(OPFull, OpNew, OP1, OP2, OP3)
+#AIC(OP1, OP2, OP3, OP4)
 
 #Шаги OpNew
-stepAIC(OpNew, direction = "backward")
+#stepAIC(OpNew, direction = "backward")
 
 
 
